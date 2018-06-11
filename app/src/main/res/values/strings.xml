@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Falcon</string>
+    <string name="channel_name">Name</string>
+    <string name="channel_description">Description</string>
+    <!--Status-->
+    <string name="status_no_results">No activity detected</string>
+    <string name="status_no_connection">You are not connected to the internet. Your Falcon cannot fly without it.</string>
+    <string name="status_sleeping">Your Falcon is sleeping. Wake him up to listen for alerts.</string>
+    <string name="status_listening">Your Falcon is awake. You will be notified if there is any suspicious activity.</string>
+    <!--Buttons-->
+    <string name="acknowledge">Acknowledge</string>
+    <string name="call_gmail_api">Ping for alert</string>
+    <string name="listening">Falcon is listening for alerts</string>
+    <string name="sleeping">Falcon is sleeping</string>
+</resources>
