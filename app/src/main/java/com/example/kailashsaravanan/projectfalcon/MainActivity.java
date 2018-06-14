@@ -40,17 +40,23 @@ import android.os.Message;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompatExtras;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.test.InstrumentationTestRunner;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -72,6 +78,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.annotation.Nullable;
 import javax.annotation.meta.When;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -101,9 +108,7 @@ public class MainActivity extends AppCompatActivity
 
     private Thread t;
 
-    private SectionsPageAdapter mSectionsPageAdapter;
-    private ViewPager mViewPager;
-
+    private DrawerLayout mDrawerLayout;
     MainActivity main = this;
 
     /**
@@ -114,6 +119,31 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@Nullable MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
 
         mCallApiButton = findViewById(R.id.callAPIButton);
         mCallApiButton.setOnClickListener(new View.OnClickListener() {
@@ -163,22 +193,16 @@ public class MainActivity extends AppCompatActivity
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
-
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-
-        mViewPager = findViewById(R.id.container);
-        setupViewPager(mViewPager);
-
-        TabLayout tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
     }
 
-    private void setupViewPager(ViewPager viewPager){
-        SectionsPageAdapter sectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-        sectionsPageAdapter.addFragment(new FragmentHome(), "Home");
-        sectionsPageAdapter.addFragment(new FragmentGallery(), "Gallery");
-        sectionsPageAdapter.addFragment(new FragmentHistory(), "History");
-        viewPager.setAdapter(sectionsPageAdapter);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void runGmailCheck() {
