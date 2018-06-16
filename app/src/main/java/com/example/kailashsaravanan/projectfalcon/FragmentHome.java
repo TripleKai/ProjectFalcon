@@ -177,7 +177,7 @@ public class FragmentHome extends Fragment
         return view;
     }
 
-//    @Override
+    //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        switch (item.getItemId()) {
 //            case android.R.id.home:
@@ -195,6 +195,9 @@ public class FragmentHome extends Fragment
                 try {
                     while (!t.isInterrupted()){
                         Thread.sleep(5000);
+                        if(getActivity() == null){
+                            return;
+                        }
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
