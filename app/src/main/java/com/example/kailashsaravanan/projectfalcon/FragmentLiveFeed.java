@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class FragmentLiveFeed extends Fragment {
+    private static final String TAG = "FragmentLiveFeed";
 
     public FragmentLiveFeed(){
 

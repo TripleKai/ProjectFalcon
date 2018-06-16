@@ -90,7 +90,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class FragmentHome extends Fragment
         implements EasyPermissions.PermissionCallbacks{
-
+    private static final String TAG = "FragmentHome";
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     private Button mCallApiButton;
@@ -175,6 +175,12 @@ public class FragmentHome extends Fragment
                 .setBackOff(new ExponentialBackOff());
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 
     //    @Override
@@ -488,6 +494,14 @@ public class FragmentHome extends Fragment
                     else if(!mAcknowledge){
                         sendNotification();
                         labels.add(getMessage(mService, user, messages.get(emailNum).getId()).getSnippet());
+                        FragmentHistory history = new FragmentHistory();
+                        Bundle args = new Bundle();
+                        args.putString("Test", "This is a test");
+                        history.setArguments(args);
+                        getFragmentManager().beginTransaction()
+                                .add(R.id.content_frame, history)
+                                .hide(history)
+                                .commit();
                     }
                 }
             }
@@ -553,7 +567,7 @@ public class FragmentHome extends Fragment
                 .setAutoCancel(true)
                 .addAction(R.mipmap.ic_launcher, "Acknowledge", actionIntent)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setPriority(NotificationCompat.PRIORITY_MAX);
 
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
 

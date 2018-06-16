@@ -90,7 +90,7 @@ import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
     private Button mCallApiButton;
