@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "753662638004",
+    "firebase_url": "https://project-falcon-205118.firebaseio.com",
+    "project_id": "project-falcon-205118",
+    "storage_bucket": "project-falcon-205118.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753662638004:android:9ed2892e9226352d",
+        "android_client_info": {
+          "package_name": "com.example.kailashsaravanan.projectfalcon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753662638004-sfirqf57o419iqdp6e91mcq1coo24mua.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "753662638004-ja51o35j2jk3dkqbhujr8o6m6drv9lsl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "753662638004-sfirqf57o419iqdp6e91mcq1coo24mua.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrbb6caBvf1KuiyZ7J5MBn2H66vr1Re9o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753662638004-sfirqf57o419iqdp6e91mcq1coo24mua.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
