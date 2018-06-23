@@ -17,5 +17,9 @@
     <string name="gallery">Gallery</string>
     <string name="history">History</string>
     <string name="live_feed">Live Feed</string>
+    <string name="settings">Settings</string>
+    <!--Output-->
+    <string name="captured_faces">Captured Faces: </string>
+    <string name="captured_motion">Captured Motion: </string>
 
 </resources>
