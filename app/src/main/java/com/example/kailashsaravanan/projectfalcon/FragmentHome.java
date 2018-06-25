@@ -150,7 +150,11 @@ public class FragmentHome extends Fragment{
             public void onClick(View v) {
                 if(mAcknowledge){
                     mAcknowledge = false;
+                    Toast.makeText(getActivity(), "Acknowledged", Toast.LENGTH_SHORT).show();
                     mAcknowledgeButton.setBackground(getResources().getDrawable(R.drawable.button_bg2));
+
+                    // Delete existing data from real-time database
+                    mRef.child("/").removeValue();
                 }
             }
         });
