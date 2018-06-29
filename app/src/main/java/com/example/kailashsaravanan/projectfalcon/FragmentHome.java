@@ -37,11 +37,11 @@ public class FragmentHome extends Fragment{
     private boolean mAcknowledge = false;
     private boolean mNotificationSent = false;
 
-    final FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference mRef = mDatabase.getReference();
-
     private ValueEventListener mFalconListener;
     private ValueEventListener mPinger;
+
+    final public FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    public DatabaseReference mRef = mDatabase.getReference();
 
     public FragmentHome() {
 
@@ -51,6 +51,13 @@ public class FragmentHome extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @android.support.annotation.Nullable ViewGroup container, @android.support.annotation.Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        if (savedInstanceState == null){
+            mActive = false;
+        }
+        else {
+            mActive = savedInstanceState.getBoolean("mActive");
+        }
 
         // Set face count output text properties
         mOutputFacesText = view.findViewById(R.id.output_faces);
@@ -185,6 +192,7 @@ public class FragmentHome extends Fragment{
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
+        outState.putBoolean("mActive", mActive);
     }
 
     private void pingFirebase(){
