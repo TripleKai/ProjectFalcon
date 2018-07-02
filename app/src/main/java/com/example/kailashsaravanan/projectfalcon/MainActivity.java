@@ -1,10 +1,18 @@
 package com.example.kailashsaravanan.projectfalcon;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -53,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction mFragmentTransaction;
     MainActivity main = this;
 
+    private boolean mNotificationSent = false;
+
     /**
      * Create the main activity.
      * @param savedInstanceState previously saved instance data.
@@ -88,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         // For example, swap UI fragments here
                         Fragment fragment = null;
                         Class fragmentClass;
-                        switch (menuItem.getItemId()){
+                        switch (menuItem.getItemId()) {
                             case R.id.nav_home:
                                 fragmentClass = FragmentHome.class;
                                 break;
@@ -107,9 +117,9 @@ public class MainActivity extends AppCompatActivity {
                             default:
                                 fragmentClass = FragmentHome.class;
                         }
-                        try{
-                            fragment = (Fragment)fragmentClass.newInstance();
-                        } catch (Exception e){
+                        try {
+                            fragment = (Fragment) fragmentClass.newInstance();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
@@ -126,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+
 //        displayView(R.id.nav_home);
 //
 //        mCallApiButton = findViewById(R.id.callAPIButton);
@@ -177,7 +188,54 @@ public class MainActivity extends AppCompatActivity {
 //                getApplicationContext(), Arrays.asList(SCOPES))
 //                .setBackOff(new ExponentialBackOff());
     }
-//
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = this.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void sendNotification(){
+        // -- Notification generation -- //
+        createNotificationChannel();
+
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, FragmentHome.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        PendingIntent actionIntent = PendingIntent.getBroadcast(this, 0, new Intent(this, this.getClass()), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("FALCON ALERT")
+                .setContentText("Suspicious motion has been detected")
+                .setColor(Color.WHITE)
+                .setContentIntent(actionIntent)
+                .setColor(Color.parseColor("#B00020"))
+                .setOnlyAlertOnce(true)
+                .setAutoCancel(true)
+                .addAction(R.mipmap.ic_launcher, "Acknowledge", actionIntent)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(notificationId, mBuilder.build());
+
+        mNotificationSent = !mNotificationSent;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

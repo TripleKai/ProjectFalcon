@@ -1,16 +1,9 @@
 package com.example.kailashsaravanan.projectfalcon;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +33,8 @@ public class FragmentHome extends Fragment{
     private ValueEventListener mFalconListener;
     private ValueEventListener mPinger;
 
+    private MainActivity mainActivity;
+
     final public FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     public DatabaseReference mRef = mDatabase.getReference();
 
@@ -52,12 +47,7 @@ public class FragmentHome extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @android.support.annotation.Nullable ViewGroup container, @android.support.annotation.Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        if (savedInstanceState == null){
-            mActive = false;
-        }
-        else {
-            mActive = savedInstanceState.getBoolean("mActive");
-        }
+        mainActivity = (MainActivity)getActivity();
 
         // Set face count output text properties
         mOutputFacesText = view.findViewById(R.id.output_faces);
@@ -83,14 +73,14 @@ public class FragmentHome extends Fragment{
                     mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
-                            sendNotification();
+                            mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()) {
                                 String output = "Captured Faces: " + snapshot.getValue(String.class);
                                 mOutputFacesText.setText(output);
                             }
                         } else if (singleSnapshot.getKey().equals("Captured Motion") && singleSnapshot.hasChildren()) {
-                            sendNotification();
+                            mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
                                 String output = "Captured Motion: " + snapshot.getValue(String.class);
@@ -121,14 +111,14 @@ public class FragmentHome extends Fragment{
                     mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
-                            sendNotification();
+                            mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
                                 String output = "Captured Faces: " + snapshot.getValue(String.class);
                                 mOutputFacesText.setText(output);
                             }
                         } else if (singleSnapshot.getKey().equals("Captured Motion") && singleSnapshot.hasChildren()) {
-                            sendNotification();
+                            mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
                                 String output = "Captured Motion: " + snapshot.getValue(String.class);
@@ -189,6 +179,17 @@ public class FragmentHome extends Fragment{
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null){
+            mActive = savedInstanceState.getBoolean("mActive");
+        }
+        else {
+            mActive = false;
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -219,51 +220,51 @@ public class FragmentHome extends Fragment{
         }
     }
 
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    public void sendNotification(){
-        // -- Notification generation -- //
-        createNotificationChannel();
-
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(getActivity(), FragmentHome.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        PendingIntent actionIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(getActivity(), getActivity().getClass()), PendingIntent.FLAG_UPDATE_CURRENT);
-
-        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("FALCON ALERT")
-                .setContentText("Suspicious motion has been detected")
-                .setColor(Color.WHITE)
-                .setContentIntent(actionIntent)
-                .setColor(Color.parseColor("#B00020"))
-                .setOnlyAlertOnce(true)
-                .setAutoCancel(true)
-                .addAction(R.mipmap.ic_launcher, "Acknowledge", actionIntent)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
-
-        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
-
-        // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(notificationId, mBuilder.build());
-
-        mNotificationSent = !mNotificationSent;
-    }
+//    private void createNotificationChannel() {
+//        // Create the NotificationChannel, but only on API 26+ because
+//        // the NotificationChannel class is new and not in the support library
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            CharSequence name = getString(R.string.channel_name);
+//            String description = getString(R.string.channel_description);
+//            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+//            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+//            channel.setDescription(description);
+//            // Register the channel with the system; you can't change the importance
+//            // or other notification behaviors after this
+//            NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//    }
+//
+//    public void sendNotification(){
+//        // -- Notification generation -- //
+//        createNotificationChannel();
+//
+//        // Create an explicit intent for an Activity in your app
+//        Intent intent = new Intent(getActivity(), FragmentHome.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+////        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//
+//        PendingIntent actionIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(getActivity(), getActivity().getClass()), PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
+//                .setSmallIcon(R.mipmap.ic_launcher)
+//                .setContentTitle("FALCON ALERT")
+//                .setContentText("Suspicious motion has been detected")
+//                .setColor(Color.WHITE)
+//                .setContentIntent(actionIntent)
+//                .setColor(Color.parseColor("#B00020"))
+//                .setOnlyAlertOnce(true)
+//                .setAutoCancel(true)
+//                .addAction(R.mipmap.ic_launcher, "Acknowledge", actionIntent)
+//                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+//                .setPriority(NotificationCompat.PRIORITY_HIGH);
+//
+//        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getActivity());
+//
+//        // notificationId is a unique int for each notification that you must define
+//        notificationManager.notify(notificationId, mBuilder.build());
+//
+//        mNotificationSent = !mNotificationSent;
+//    }
 }
