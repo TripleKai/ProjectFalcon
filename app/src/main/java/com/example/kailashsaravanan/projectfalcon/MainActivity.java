@@ -189,6 +189,16 @@ public class MainActivity extends AppCompatActivity {
 //                .setBackOff(new ExponentialBackOff());
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -235,16 +245,6 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(notificationId, mBuilder.build());
 
         mNotificationSent = !mNotificationSent;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 //
 //    public void runGmailCheck() {

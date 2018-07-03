@@ -2,7 +2,6 @@ package com.example.kailashsaravanan.projectfalcon;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -27,6 +26,7 @@ public class FragmentHome extends Fragment{
     private TextView mOutputFacesText, mOutputMotionText;
     private Button mAcknowledgeButton, mCallApiButton, mActivationButton;
     private boolean mActive = false;
+
     private boolean mAcknowledge = false;
     private boolean mNotificationSent = false;
 
@@ -47,7 +47,7 @@ public class FragmentHome extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @android.support.annotation.Nullable ViewGroup container, @android.support.annotation.Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mainActivity = (MainActivity)getActivity();
+        mainActivity = (MainActivity) getActivity();
 
         // Set face count output text properties
         mOutputFacesText = view.findViewById(R.id.output_faces);
@@ -69,7 +69,7 @@ public class FragmentHome extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()) {
-                    mAcknowledge = true;
+                    setmAcknowledge(true);
                     mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
@@ -107,7 +107,7 @@ public class FragmentHome extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()) {
-                    mAcknowledge = true;
+                    setmAcknowledge(true);
                     mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
@@ -146,7 +146,7 @@ public class FragmentHome extends Fragment{
             @Override
             public void onClick(View v) {
                 if(mAcknowledge){
-                    mAcknowledge = false;
+                    setmAcknowledge(false);
                     Toast.makeText(getActivity(), "Acknowledged", Toast.LENGTH_SHORT).show();
                     mAcknowledgeButton.setBackground(getResources().getDrawable(R.drawable.button_bg2));
 
@@ -178,23 +178,23 @@ public class FragmentHome extends Fragment{
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null){
-            mActive = savedInstanceState.getBoolean("mActive");
-        }
-        else {
-            mActive = false;
-        }
-    }
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        if (savedInstanceState != null){
+//            mActive = savedInstanceState.getBoolean("mActive");
+//        }
+//        else {
+//            mActive = false;
+//        }
+//    }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putBoolean("mActive", mActive);
-    }
+//    @Override
+//    public void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//
+//        outState.putBoolean("mActive", mActive);
+//    }
 
     private void pingFirebase(){
         Toast.makeText(getActivity(), "Falcon has been called", Toast.LENGTH_SHORT).show();
@@ -208,7 +208,6 @@ public class FragmentHome extends Fragment{
             mRef.child("/").addValueEventListener(mFalconListener);
             mActivationButton.setText(R.string.listening);
             mActivationButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-            if(mAcknowledge){ mActivationButton.setEnabled(false); } else { mActivationButton.setEnabled(true); }
         }
         else {
             Toast.makeText(getActivity(), "Falcon is now asleep", Toast.LENGTH_SHORT).show();
@@ -216,8 +215,7 @@ public class FragmentHome extends Fragment{
             mOutputFacesText.setText(R.string.status_sleeping);
             mOutputMotionText.setText("");
             mActivationButton.setText(R.string.sleeping);
-            mActivationButton.setBackground(getResources().getDrawable(R.drawable.button_bg));
-        }
+            mActivationButton.setBackground(getResources().getDrawable(R.drawable.button_bg));}
     }
 
 //    private void createNotificationChannel() {
@@ -267,4 +265,12 @@ public class FragmentHome extends Fragment{
 //
 //        mNotificationSent = !mNotificationSent;
 //    }
+
+    public boolean getmAcknowledge() {
+        return mAcknowledge;
+    }
+
+    public void setmAcknowledge(boolean mAcknowledge) {
+        this.mAcknowledge = mAcknowledge;
+    }
 }
