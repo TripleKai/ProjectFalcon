@@ -12,4 +12,11 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingTop="50dp"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="bottom|end"/>
+
 </FrameLayout>
