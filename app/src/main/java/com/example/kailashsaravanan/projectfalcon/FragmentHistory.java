@@ -3,7 +3,6 @@ package com.example.kailashsaravanan.projectfalcon;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,21 +48,6 @@ public class FragmentHistory extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
 
-//        Button button = view.findViewById(R.id.addButton);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(getArguments() != null){
-//                    mString = getArguments().getString("Test");
-//                    updateUI();
-//                }
-//                else if(getArguments() == null){
-//                    Toast.makeText(getContext(), "Null", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -74,13 +57,15 @@ public class FragmentHistory extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mItems = new ArrayList<>();
                 if (dataSnapshot.hasChildren()){
-                    Toast.makeText(getActivity(), "Works", Toast.LENGTH_SHORT).show();
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                        String val = singleSnapshot.getKey();
-                        mItems.add(new HistoryItem(val));
+                        String key = singleSnapshot.getKey();
+                        String date = key.substring(4,6) + "/"
+                                + key.substring(6,8) + "/"
+                                + key.substring(0,4);
+                        mItems.add(new HistoryItem(date));
+                        mHistoryAdapter = new HistoryAdapter(getActivity(), mItems);
+                        mRecyclerView.setAdapter(mHistoryAdapter);
                     }
-                    mHistoryAdapter = new HistoryAdapter(getActivity(), mItems);
-                    mRecyclerView.setAdapter(mHistoryAdapter);
                 }
             }
 
@@ -91,14 +76,6 @@ public class FragmentHistory extends Fragment {
         };
 
         mRef.child("Captured Motion").addValueEventListener(mHistoryListener);
-
-        FloatingActionButton addButton = view.findViewById(R.id.addButton);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
         return view;
     }
 

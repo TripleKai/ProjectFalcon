@@ -147,8 +147,16 @@ public class FragmentHome extends Fragment{
             public void onClick(View v) {
                 if(mAcknowledge){
                     setmAcknowledge(false);
-                    Toast.makeText(getActivity(), "Acknowledged", Toast.LENGTH_SHORT).show();
                     mAcknowledgeButton.setBackground(getResources().getDrawable(R.drawable.button_bg2));
+                    Toast.makeText(getActivity(), "Acknowledged", Toast.LENGTH_SHORT).show();
+                    if(mActive){
+                        mOutputFacesText.setText(R.string.status_safe);
+                        mOutputMotionText.setText("");
+                    }
+                    else if(!mActive){
+                        mOutputFacesText.setText(R.string.status_sleeping);
+                        mOutputMotionText.setText("");
+                    }
                 }
             }
         });
