@@ -78,7 +78,6 @@ public class FragmentGallery extends Fragment {
         };
 
         mRef.child("Captured Motion").addValueEventListener(mPictureListener);
-
 //        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
 
 //        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/project-falcon-bucket/o/20180617_15h51m50s014584.jpg?alt=media&token=32e6fa34-feab-4965-a1e4-8aeb3b80facd").into((ImageView) view.findViewById(R.id.image_view));

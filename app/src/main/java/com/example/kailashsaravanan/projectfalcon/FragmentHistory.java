@@ -13,14 +13,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class FragmentHistory extends Fragment {
     private static final String TAG = "FragmentHistory";
@@ -36,6 +42,9 @@ public class FragmentHistory extends Fragment {
 
     final public FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     public DatabaseReference mRef = mDatabase.getReference();
+
+    private FirebaseStorage mStorage = FirebaseStorage.getInstance("gs://project-falcon-bucket");
+    private StorageReference mStorageRef = mStorage.getReference();
 
     private ValueEventListener mHistoryListener;
 
@@ -58,13 +67,16 @@ public class FragmentHistory extends Fragment {
                 mItems = new ArrayList<>();
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                        String key = singleSnapshot.getKey();
-                        String date = key.substring(4,6) + "/"
-                                + key.substring(6,8) + "/"
-                                + key.substring(0,4);
-                        mItems.add(new HistoryItem(date));
-                        mHistoryAdapter = new HistoryAdapter(getActivity(), mItems);
-                        mRecyclerView.setAdapter(mHistoryAdapter);
+                        mStorageRef.child(singleSnapshot.getKey() + ".jpg").getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                            @Override
+                            public void onSuccess(StorageMetadata storageMetadata) {
+                                SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yyyy: HH:mm:ss", Locale.US);
+                                String dateTime = sfd.format(storageMetadata.getCreationTimeMillis());
+                                mItems.add(new HistoryItem(dateTime));
+                                mHistoryAdapter = new HistoryAdapter(getActivity(), mItems);
+                                mRecyclerView.setAdapter(mHistoryAdapter);
+                            }
+                        });
                     }
                 }
             }
@@ -78,23 +90,4 @@ public class FragmentHistory extends Fragment {
         mRef.child("Captured Motion").addValueEventListener(mHistoryListener);
         return view;
     }
-
-//    public void updateUI(){
-//        ArrayList<String> taskList = new ArrayList<>();
-//
-//        taskList.add(mString);
-//        taskList.add(mString);
-//        taskList.add(mString);
-//        if (mArrayAdapter == null) {
-//            mArrayAdapter = new ArrayAdapter<>(getActivity(),
-//                    R.layout.history_item,
-//                    R.id.task_title,
-//                    taskList);
-//            mListView.setAdapter(mArrayAdapter);
-//        } else {
-//            mArrayAdapter.clear();
-//            mArrayAdapter.addAll(taskList);
-//            mArrayAdapter.notifyDataSetChanged();
-//        }
-//    }
 }
