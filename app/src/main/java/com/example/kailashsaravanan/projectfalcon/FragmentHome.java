@@ -220,7 +220,7 @@ public class FragmentHome extends Fragment{
             mOutputFacesText.setText(R.string.status_sleeping);
             mOutputMotionText.setText("");
             mActivationButton.setText(R.string.sleeping);
-            mActivationButton.setBackground(getResources().getDrawable(R.drawable.button_bg));}
+            mActivationButton.setBackground(getResources().getDrawable(R.drawable.button_bg3));}
     }
 
 //    private void createNotificationChannel() {
