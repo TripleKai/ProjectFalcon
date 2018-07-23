@@ -18,12 +18,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.google.firebase.database.DatabaseReference;
+import java.util.Locale;
 
 public class FragmentGallery extends Fragment {
     private static final String TAG = "FragmentGallery";
@@ -59,10 +60,22 @@ public class FragmentGallery extends Fragment {
                 mPictures = new ArrayList<>();
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                        final Picture picture = new Picture();
+                        mStorageRef.child(singleSnapshot.getKey() + ".jpg").getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                            @Override
+                            public void onSuccess(StorageMetadata storageMetadata) {
+                                SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yyyy: HH:mm:ss", Locale.US);
+                                String dateTime = sfd.format(storageMetadata.getCreationTimeMillis());
+                                String picSize =  Long.toString(storageMetadata.getSizeBytes());
+                                picture.setSize(picSize);
+                                picture.setDateTime(dateTime);
+                            }
+                        });
                         mStorageRef.child(singleSnapshot.getKey() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                mPictures.add(new Picture(uri.toString()));
+                                picture.setImageUrl(uri.toString());
+                                mPictures.add(picture);
                                 mImageAdapter = new ImageAdapter(getActivity(), mPictures);
                                 mRecyclerView.setAdapter(mImageAdapter);
                             }
@@ -78,23 +91,6 @@ public class FragmentGallery extends Fragment {
         };
 
         mRef.child("Captured Motion").addValueEventListener(mPictureListener);
-//        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
-
-//        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/project-falcon-bucket/o/20180617_15h51m50s014584.jpg?alt=media&token=32e6fa34-feab-4965-a1e4-8aeb3b80facd").into((ImageView) view.findViewById(R.id.image_view));
-
         return view;
-    }
-
-    private void updateGallery(){
-        mStorageRef.child("20180625_17h58m19s710377.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            String s = "";
-            @Override
-            public void onSuccess(Uri uri) {
-                s = uri.toString();
-//                mImageURI = uri;
-//                Toast.makeText(getActivity(), mImageURI, Toast.LENGTH_SHORT).show();
-                mPictures.add(new Picture(s));
-            }
-        });
     }
 }

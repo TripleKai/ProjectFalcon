@@ -13,4 +13,11 @@
         android:textColor="@color/colorButtonText"
         android:textSize="20sp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="bottom|start"
+        android:background="@color/colorOffPrimary"
+        />
+
 </LinearLayout>

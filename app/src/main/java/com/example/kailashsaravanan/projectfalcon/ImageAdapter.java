@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -24,10 +25,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
+        TextView textViewPicDate;
+        TextView textViewPicSize;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.imageView);
+            imageView = itemView.findViewById(R.id.image_view);
+            textViewPicDate = itemView.findViewById(R.id.pic_date);
+            textViewPicSize = itemView.findViewById(R.id.pic_size);
         }
 
     }
@@ -43,15 +48,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @Override
     public void onBindViewHolder(@Nullable ImageViewHolder holder, int position) {
         Picture picture = mPictures.get(position);
-//        holder.imageView.setImageDrawable(mContext.getResources().getDrawable(picture.getImage()));
-
-//        Upload uploadCurrent = mUploads.get(position);
-//        holder.textViewName.setText(uploadCurrent.getName());
         Picasso.get()
                 .load(picture.getImageUrl())
                 .fit()
                 .centerInside()
                 .into(holder.imageView);
+        holder.textViewPicDate.setText(picture.getDateTime());
+        holder.textViewPicSize.setText(picture.getSize() + " Bytes");
     }
 
     @Override
