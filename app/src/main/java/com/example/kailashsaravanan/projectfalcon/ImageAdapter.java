@@ -1,6 +1,7 @@
 package com.example.kailashsaravanan.projectfalcon;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private Context mContext;
     private List<Picture> mPictures;
 
@@ -47,12 +49,18 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(@Nullable ImageViewHolder holder, int position) {
-        Picture picture = mPictures.get(position);
+        final Picture picture = mPictures.get(position);
         Picasso.get()
                 .load(picture.getImageUrl())
                 .fit()
                 .centerInside()
                 .into(holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayer(picture);
+            }
+        });
         holder.textViewPicDate.setText(picture.getDateTime());
         holder.textViewPicSize.setText(picture.getSize() + " Bytes");
     }
@@ -60,5 +68,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @Override
     public int getItemCount() {
         return mPictures.size();
+    }
+
+    public void displayer(Picture picture){
+        Intent intent = new Intent(mContext, DisplayImageActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, picture.getImageUrl());
+        mContext.startActivity(intent);
     }
 }
