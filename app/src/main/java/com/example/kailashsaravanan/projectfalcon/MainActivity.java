@@ -105,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_history:
                                 fragmentClass = FragmentHistory.class;
                                 break;
+                            case R.id.nav_videos:
+                                fragmentClass = FragmentVideos.class;
+                                break;
                             case R.id.nav_gallery:
                                 fragmentClass = FragmentGallery.class;
                                 break;

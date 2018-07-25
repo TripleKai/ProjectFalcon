@@ -14,8 +14,9 @@
     <string name="sleeping">Falcon is sleeping</string>
     <!--Menu-->
     <string name="home">Home</string>
-    <string name="gallery">Gallery</string>
     <string name="history">History</string>
+    <string name="videos">Videos</string>
+    <string name="gallery">Gallery</string>
     <string name="live_feed">Live Feed</string>
     <string name="settings">Settings</string>
     <!--Output-->
