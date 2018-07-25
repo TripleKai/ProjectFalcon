@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ImageViewHolder> {
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private Context mContext;
     private List<Video> mVideos;
@@ -22,12 +22,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ImageViewHol
         mVideos = videos;
     }
 
-    public class ImageViewHolder extends RecyclerView.ViewHolder {
+    public class VideoViewHolder extends RecyclerView.ViewHolder {
         TextView textViewVideoUrl;
         TextView textViewVidDate;
         TextView textViewVidSize;
 
-        public ImageViewHolder(View itemView) {
+        public VideoViewHolder(View itemView) {
             super(itemView);
             textViewVideoUrl = itemView.findViewById(R.id.video_url);
             textViewVidDate = itemView.findViewById(R.id.vid_date);
@@ -38,14 +38,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ImageViewHol
 
     @NonNull
     @Override
-    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // May need to change this line below
         View v = LayoutInflater.from(mContext).inflate(R.layout.video_item, parent, false);
-        return new ImageViewHolder(v);
+        return new VideoViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@Nullable ImageViewHolder holder, int position) {
+    public void onBindViewHolder(@Nullable VideoViewHolder holder, int position) {
         final Video video = mVideos.get(position);
         holder.textViewVideoUrl.setOnClickListener(new View.OnClickListener() {
             @Override
