@@ -1,12 +1,21 @@
 package com.example.kailashsaravanan.projectfalcon;
 
 public class Video {
+    private String mName;
     private String mVideoUrl;
     private String mDateTime;
     private String mSize;
 
     public Video(){
 
+    }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
     }
 
     public String getVideoUrl() {

@@ -5,18 +5,10 @@
     android:background="@color/colorBackground"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/display_vid_url"
+    <VideoView
+        android:id="@+id/vid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/colorButtonText"
-        android:layout_centerInParent="true"
-        />
-
-    <!--<VideoView-->
-        <!--android:id="@+id/vid"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_centerInParent="true"/>-->
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

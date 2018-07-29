@@ -61,7 +61,8 @@ public class FragmentVideos extends Fragment {
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                         final Video video = new Video();
-                        mStorageRef.child("videos/" + singleSnapshot.getKey() + ".avi").getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                        final DataSnapshot snapshot = singleSnapshot;
+                        mStorageRef.child("videos/" + singleSnapshot.getKey() + ".mp4").getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                             @Override
                             public void onSuccess(StorageMetadata storageMetadata) {
                                 SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yyyy: HH:mm:ss", Locale.US);
@@ -69,9 +70,10 @@ public class FragmentVideos extends Fragment {
                                 String vidSize =  Long.toString(storageMetadata.getSizeBytes());
                                 video.setSize(vidSize);
                                 video.setDateTime(dateTime);
+                                video.setName(snapshot.getKey());
                             }
                         });
-                        mStorageRef.child("videos/" + singleSnapshot.getKey() + ".avi").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        mStorageRef.child("videos/" + singleSnapshot.getKey() + ".mp4").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
                                 video.setVideoUrl(uri.toString());
