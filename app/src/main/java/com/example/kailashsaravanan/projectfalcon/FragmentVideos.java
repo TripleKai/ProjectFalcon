@@ -77,7 +77,7 @@ public class FragmentVideos extends Fragment {
                             @Override
                             public void onSuccess(Uri uri) {
                                 video.setVideoUrl(uri.toString());
-                                mVideos.add(video);
+                                mVideos.add(0, video);
                                 mVideoAdapter = new VideoAdapter(getActivity(), mVideos);
                                 mRecyclerView.setAdapter(mVideoAdapter);
                             }

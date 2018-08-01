@@ -75,7 +75,7 @@ public class FragmentGallery extends Fragment {
                             @Override
                             public void onSuccess(Uri uri) {
                                 picture.setImageUrl(uri.toString());
-                                mPictures.add(picture);
+                                mPictures.add(0, picture);
                                 mImageAdapter = new ImageAdapter(getActivity(), mPictures);
                                 mRecyclerView.setAdapter(mImageAdapter);
                             }
