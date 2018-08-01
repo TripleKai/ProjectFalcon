@@ -50,8 +50,6 @@
                 android:value=".MainActivity" />
         </activity>
 
-        <receiver android:name=".SecondClass" />
-
         <meta-data
             android:name="com.example.kailashsaravanan.projectfalcon"
             android:value="AIzaSyDCxmzZ7qXF49Fh6hYXCfS0hfzg_85HCcw" />
