@@ -93,15 +93,6 @@ public class FragmentVideos extends Fragment {
         };
 
         mRef.child("Videos").addValueEventListener(mVideoListener);
-
-//        Video video = new Video();
-//        video.setDateTime("7/24/2018");
-//        video.setSize("4 MB");
-//        video.setVideoUrl("https://firebasestorage.googleapis.com/v0/b/project-falcon-bucket/o/output.avi?alt=media&token=bdec171d-c94a-4589-817e-1ba4f707af80");
-//        mVideos.add(video);
-//        mVideoAdapter = new VideoAdapter(getActivity(), mVideos);
-//        mRecyclerView.setAdapter(mVideoAdapter);
-
         return view;
     }
 }

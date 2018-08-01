@@ -114,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_feed:
                                 fragmentClass = FragmentLiveFeed.class;
                                 break;
+                            case R.id.nav_map:
+                                fragmentClass = FragmentMap.class;
+                                break;
                             case R.id.nav_settings:
                                 fragmentClass = FragmentSettings.class;
                                 break;
