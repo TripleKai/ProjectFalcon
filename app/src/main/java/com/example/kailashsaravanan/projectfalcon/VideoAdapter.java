@@ -55,7 +55,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         });
         holder.textViewVideoUrl.setText(video.getVideoUrl());
         holder.textViewVidDate.setText(video.getDateTime());
-        holder.textViewVidSize.setText(video.getSize() + " Bytes");
+        holder.textViewVidSize.setText(video.getSize());
     }
 
     @Override

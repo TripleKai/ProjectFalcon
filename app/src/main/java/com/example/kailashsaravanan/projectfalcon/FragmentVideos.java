@@ -67,7 +67,7 @@ public class FragmentVideos extends Fragment {
                             public void onSuccess(StorageMetadata storageMetadata) {
                                 SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yyyy: HH:mm:ss", Locale.US);
                                 String dateTime = sfd.format(storageMetadata.getCreationTimeMillis());
-                                String vidSize =  Long.toString(storageMetadata.getSizeBytes());
+                                String vidSize = humanReadableByteCount(storageMetadata.getSizeBytes(), true);
                                 video.setSize(vidSize);
                                 video.setDateTime(dateTime);
                                 video.setName(snapshot.getKey());
@@ -94,5 +94,13 @@ public class FragmentVideos extends Fragment {
 
         mRef.child("Videos").addValueEventListener(mVideoListener);
         return view;
+    }
+
+    public static String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 }
