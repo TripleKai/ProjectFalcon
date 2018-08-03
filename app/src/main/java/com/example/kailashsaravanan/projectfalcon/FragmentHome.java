@@ -76,14 +76,16 @@ public class FragmentHome extends Fragment{
                             mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()) {
-                                String output = "Captured Faces: " + snapshot.getValue(String.class);
+                                String[] items = snapshot.getValue(String.class).split(",");
+                                String output = "Captured Faces: " + items[0];
                                 mOutputFacesText.setText(output);
                             }
                         } else if (singleSnapshot.getKey().equals("Captured Motion") && singleSnapshot.hasChildren()) {
                             mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
-                                String output = "Captured Motion: " + snapshot.getValue(String.class);
+                                String[] items = snapshot.getValue(String.class).split(",");
+                                String output = "Captured Motion: " + items[0];
                                 mOutputMotionText.setText(output);
                             }
                         }
@@ -114,14 +116,16 @@ public class FragmentHome extends Fragment{
                             mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
-                                String output = "Captured Faces: " + snapshot.getValue(String.class);
+                                String[] items = snapshot.getValue(String.class).split(",");
+                                String output = "Captured Faces: " + items[0];
                                 mOutputFacesText.setText(output);
                             }
                         } else if (singleSnapshot.getKey().equals("Captured Motion") && singleSnapshot.hasChildren()) {
                             mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
-                                String output = "Captured Motion: " + snapshot.getValue(String.class);
+                                String[] items = snapshot.getValue(String.class).split(",");
+                                String output = "Captured Motion: " + items[0];
                                 mOutputMotionText.setText(output);
                             }
                         }

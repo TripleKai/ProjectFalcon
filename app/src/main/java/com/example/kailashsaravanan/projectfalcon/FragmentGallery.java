@@ -61,12 +61,14 @@ public class FragmentGallery extends Fragment {
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                         final Picture picture = new Picture();
+                        String[] items = singleSnapshot.getValue(String.class).split(",");
+                        picture.setLocation(items[1] + ", " + items[2] + ", " + items[3]);
                         mStorageRef.child("pictures/" + singleSnapshot.getKey() + ".jpg").getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                             @Override
                             public void onSuccess(StorageMetadata storageMetadata) {
                                 SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yyyy: HH:mm:ss", Locale.US);
                                 String dateTime = sfd.format(storageMetadata.getCreationTimeMillis());
-                                String picSize =  Long.toString(storageMetadata.getSizeBytes());
+                                String picSize =  humanReadableByteCount(storageMetadata.getSizeBytes(), true);
                                 picture.setSize(picSize);
                                 picture.setDateTime(dateTime);
                             }
@@ -92,5 +94,13 @@ public class FragmentGallery extends Fragment {
 
         mRef.child("Captured Motion").addValueEventListener(mPictureListener);
         return view;
+    }
+
+    public static String humanReadableByteCount(long bytes, boolean si) {
+        int unit = si ? 1000 : 1024;
+        if (bytes < unit) return bytes + " B";
+        int exp = (int) (Math.log(bytes) / Math.log(unit));
+        String pre = (si ? "kMGTPE" : "KMGTPE").charAt(exp-1) + (si ? "" : "i");
+        return String.format("%.1f %sB", bytes / Math.pow(unit, exp), pre);
     }
 }

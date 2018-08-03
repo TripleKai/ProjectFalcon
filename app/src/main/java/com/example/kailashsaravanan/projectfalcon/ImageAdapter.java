@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,12 +30,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         ImageView imageView;
         TextView textViewPicDate;
         TextView textViewPicSize;
+        Button btnLocation;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.image_view);
             textViewPicDate = itemView.findViewById(R.id.pic_date);
             textViewPicSize = itemView.findViewById(R.id.pic_size);
+            btnLocation = itemView.findViewById(R.id.btn_location);
         }
 
     }
@@ -62,7 +65,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             }
         });
         holder.textViewPicDate.setText(picture.getDateTime());
-        holder.textViewPicSize.setText(picture.getSize() + " Bytes");
+        holder.textViewPicSize.setText(picture.getSize());
+        holder.btnLocation.setText(picture.getLocation());
     }
 
     @Override
