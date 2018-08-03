@@ -50,7 +50,7 @@
                 android:layout_marginTop="40dp"
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"
-                android:background="@color/colorAccent"
+                android:background="@drawable/button_bg4"
                 android:textColor="@color/colorButtonText"/>
 
         </RelativeLayout>

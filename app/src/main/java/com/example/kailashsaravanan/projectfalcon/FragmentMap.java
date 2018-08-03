@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,9 +30,9 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
     public DatabaseReference mRef = mDatabase.getReference();
     private double mLatitude=0, mLongitude=0, mAccuracy=0;
 
-    GoogleMap mGoogleMap;
-    MapView mMapView;
-    View mView;
+    private GoogleMap mGoogleMap;
+    private MapView mMapView;
+    private View mView;
 
     public FragmentMap(){
 
@@ -48,17 +47,11 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()){
-                    Toast.makeText(getActivity(), dataSnapshot.getChildrenCount() + "", Toast.LENGTH_SHORT).show();
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                        if (singleSnapshot.getKey().equals("accuracy")){
-                            mAccuracy = (Double) singleSnapshot.getValue();
-                        }
-                        else if (singleSnapshot.getKey().equals("lat")){
-                            mLatitude = (Double) singleSnapshot.getValue();
-                        }
-                        else if (singleSnapshot.getKey().equals("lng")){
-                            mLongitude = (Double) singleSnapshot.getValue();
-                        }
+                        String[] items = singleSnapshot.getValue(String.class).split(",");
+                        mLatitude = Double.parseDouble(items[1]);
+                        mLongitude = Double.parseDouble(items[2]);
+                        mAccuracy = Double.parseDouble(items[3]);
                     }
                 }
             }
@@ -69,7 +62,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
             }
         };
 
-        mRef.child("Location").addValueEventListener(mLocationListener);
+        mRef.child("Captured Motion").addValueEventListener(mLocationListener);
         return mView;
     }
 
