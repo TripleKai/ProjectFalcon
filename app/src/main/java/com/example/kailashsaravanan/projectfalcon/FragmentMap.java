@@ -48,7 +48,7 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                        String[] items = singleSnapshot.getValue(String.class).split(",");
+                        String[] items = singleSnapshot.getValue(String.class).split(":");
                         mLatitude = Double.parseDouble(items[1]);
                         mLongitude = Double.parseDouble(items[2]);
                         mAccuracy = Double.parseDouble(items[3]);

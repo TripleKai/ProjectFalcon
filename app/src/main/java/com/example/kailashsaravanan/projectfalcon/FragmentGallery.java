@@ -61,8 +61,8 @@ public class FragmentGallery extends Fragment {
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                         final Picture picture = new Picture();
-                        String[] items = singleSnapshot.getValue(String.class).split(",");
-                        picture.setLocation(items[1] + ", " + items[2] + ", " + items[3]);
+                        String[] items = singleSnapshot.getValue(String.class).split(":");
+                        picture.setLocation(items[4]);
                         mStorageRef.child("pictures/" + singleSnapshot.getKey() + ".jpg").getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                             @Override
                             public void onSuccess(StorageMetadata storageMetadata) {

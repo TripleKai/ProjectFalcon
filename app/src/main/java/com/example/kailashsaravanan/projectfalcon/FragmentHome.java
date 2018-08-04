@@ -76,7 +76,7 @@ public class FragmentHome extends Fragment{
                             mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()) {
-                                String[] items = snapshot.getValue(String.class).split(",");
+                                String[] items = snapshot.getValue(String.class).split(":");
                                 String output = "Captured Faces: " + items[0];
                                 mOutputFacesText.setText(output);
                             }
@@ -84,7 +84,7 @@ public class FragmentHome extends Fragment{
                             mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
-                                String[] items = snapshot.getValue(String.class).split(",");
+                                String[] items = snapshot.getValue(String.class).split(":");
                                 String output = "Captured Motion: " + items[0];
                                 mOutputMotionText.setText(output);
                             }
@@ -116,7 +116,7 @@ public class FragmentHome extends Fragment{
                             mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
-                                String[] items = snapshot.getValue(String.class).split(",");
+                                String[] items = snapshot.getValue(String.class).split(":");
                                 String output = "Captured Faces: " + items[0];
                                 mOutputFacesText.setText(output);
                             }
@@ -124,7 +124,7 @@ public class FragmentHome extends Fragment{
                             mainActivity.sendNotification();
                             mNotificationSent = !mNotificationSent;
                             for (DataSnapshot snapshot : singleSnapshot.getChildren()){
-                                String[] items = snapshot.getValue(String.class).split(",");
+                                String[] items = snapshot.getValue(String.class).split(":");
                                 String output = "Captured Motion: " + items[0];
                                 mOutputMotionText.setText(output);
                             }
