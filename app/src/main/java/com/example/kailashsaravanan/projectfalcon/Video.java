@@ -5,6 +5,7 @@ public class Video {
     private String mVideoUrl;
     private String mDateTime;
     private String mSize;
+    private String mLocation;
 
     public Video(){
 
@@ -40,5 +41,13 @@ public class Video {
 
     public void setSize(String mSize) {
         this.mSize = mSize;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
+    public void setLocation(String mLocation) {
+        this.mLocation = mLocation;
     }
 }

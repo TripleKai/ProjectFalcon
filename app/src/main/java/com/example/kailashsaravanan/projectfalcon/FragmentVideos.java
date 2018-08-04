@@ -62,6 +62,8 @@ public class FragmentVideos extends Fragment {
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                         final Video video = new Video();
                         final DataSnapshot snapshot = singleSnapshot;
+                        String[] items = singleSnapshot.getValue(String.class).split(":");
+                        video.setLocation(items[4]);
                         mStorageRef.child("videos/" + singleSnapshot.getKey() + ".mp4").getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                             @Override
                             public void onSuccess(StorageMetadata storageMetadata) {

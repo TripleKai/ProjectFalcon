@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         TextView textViewVideoUrl;
         TextView textViewVidDate;
         TextView textViewVidSize;
+        Button btnVidLocation;
 
         public VideoViewHolder(View itemView) {
             super(itemView);
             textViewVideoUrl = itemView.findViewById(R.id.video_url);
             textViewVidDate = itemView.findViewById(R.id.vid_date);
             textViewVidSize = itemView.findViewById(R.id.vid_size);
+            btnVidLocation = itemView.findViewById(R.id.btn_vid_location);
         }
 
     }
@@ -56,6 +59,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         holder.textViewVideoUrl.setText(video.getVideoUrl());
         holder.textViewVidDate.setText(video.getDateTime());
         holder.textViewVidSize.setText(video.getSize());
+        holder.btnVidLocation.setText(video.getLocation());
     }
 
     @Override

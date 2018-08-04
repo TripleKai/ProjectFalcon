@@ -44,6 +44,16 @@
                 android:paddingEnd="10dp"
                 android:textColor="@color/colorButtonText"/>
 
+            <Button
+                android:id="@+id/btn_vid_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="110dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:background="@drawable/button_bg4"
+                android:textColor="@color/colorButtonText"/>
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
