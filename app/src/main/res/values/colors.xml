@@ -6,6 +6,6 @@
     <color name="colorOffPrimary">#5f1d82</color>
     <color name="colorAccent">#bf0335</color>
     <color name="colorButtonText">#ffffff</color>
-    <color name="colorBackground">#000000</color>
-    <color name="colorBackgroundLight">#282828</color>
+    <color name="colorBackground">#161616</color>
+    <color name="colorBackgroundLight">#2d2d2d</color>
 </resources>
