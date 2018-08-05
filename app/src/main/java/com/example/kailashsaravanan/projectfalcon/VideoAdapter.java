@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         TextView textViewVidDate;
         TextView textViewVidSize;
         Button btnVidLocation;
+        ImageButton btnShare;
 
         public VideoViewHolder(View itemView) {
             super(itemView);
@@ -35,6 +37,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             textViewVidDate = itemView.findViewById(R.id.vid_date);
             textViewVidSize = itemView.findViewById(R.id.vid_size);
             btnVidLocation = itemView.findViewById(R.id.btn_vid_location);
+            btnShare = itemView.findViewById(R.id.btn_share_vid);
         }
 
     }
@@ -54,6 +57,19 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             @Override
             public void onClick(View v) {
                 displayer(video);
+            }
+        });
+        holder.btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("video/mp4");
+//                String shareSub = "Falcon Alert";
+//                String shareText = "FALCON ALERT: \n"+ "Incident Time - " + picture.getDateTime() + "\n" + "Location - " + picture.getLocation() + "\n";
+                intent.putExtra(Intent.EXTRA_STREAM, video.getVideoUri());
+//                intent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
+//                intent.putExtra(Intent.EXTRA_TEXT, shareText);
+                mContext.startActivity(Intent.createChooser(intent, "Share photo using"));
             }
         });
         holder.textViewVideoUrl.setText(video.getVideoUrl());

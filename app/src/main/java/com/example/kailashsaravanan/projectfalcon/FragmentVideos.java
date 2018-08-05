@@ -78,6 +78,7 @@ public class FragmentVideos extends Fragment {
                         mStorageRef.child("videos/" + singleSnapshot.getKey() + ".mp4").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
+                                video.setVideoUri(uri);
                                 video.setVideoUrl(uri.toString());
                                 mVideos.add(0, video);
                                 mVideoAdapter = new VideoAdapter(getActivity(), mVideos);

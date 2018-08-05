@@ -1,6 +1,9 @@
 package com.example.kailashsaravanan.projectfalcon;
 
+import android.net.Uri;
+
 public class Video {
+    private Uri mVideoUri;
     private String mName;
     private String mVideoUrl;
     private String mDateTime;
@@ -9,6 +12,14 @@ public class Video {
 
     public Video(){
 
+    }
+
+    public Uri getVideoUri() {
+        return mVideoUri;
+    }
+
+    public void setVideoUri(Uri mVideoUri) {
+        this.mVideoUri = mVideoUri;
     }
 
     public String getName() {
