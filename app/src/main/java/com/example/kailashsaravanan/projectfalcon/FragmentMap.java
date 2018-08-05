@@ -22,17 +22,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
 
 public class FragmentMap extends Fragment implements OnMapReadyCallback{
     private static final String TAG = "FragmentMap";
     private ValueEventListener mLocationListener;
     final public FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     public DatabaseReference mRef = mDatabase.getReference();
+    private FirebaseStorage mStorage = FirebaseStorage.getInstance("gs://project-falcon-bucket");
+    private StorageReference mStorageRef = mStorage.getReference();
     private double mLatitude=0, mLongitude=0, mAccuracy=0;
 
     private GoogleMap mGoogleMap;
     private MapView mMapView;
     private View mView;
+    private ArrayList<ArrayList<Double>> mLocations;
+    private ArrayList<Double> mLocation;
 
     public FragmentMap(){
 
@@ -46,12 +54,18 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
         mLocationListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mLocations = new ArrayList<>();
+                mLocation = new ArrayList<>();
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                         String[] items = singleSnapshot.getValue(String.class).split(":");
                         mLatitude = Double.parseDouble(items[1]);
                         mLongitude = Double.parseDouble(items[2]);
                         mAccuracy = Double.parseDouble(items[3]);
+                        mLocation.add(mLatitude);
+                        mLocation.add(mLongitude);
+                        mLocation.add(mAccuracy);
+                        mLocations.add(mLocation);
                     }
                 }
             }
@@ -80,16 +94,17 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
-
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(mLatitude, mLongitude)).title("Incident").snippet("Accuracy: " + String.valueOf(mAccuracy)));
 
-        mGoogleMap.addCircle(new CircleOptions()
-                .center(new LatLng(mLatitude, mLongitude))
-                .radius(mAccuracy)
-                .strokeColor(R.color.colorPrimaryDark)
-                .fillColor(R.color.colorAccent));
+        for (ArrayList<Double> location : mLocations) {
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(location.get(0), location.get(1))).title("Incident").snippet("Accuracy: " + String.valueOf(location.get(2)) + " Meters"));
+            mGoogleMap.addCircle(new CircleOptions()
+                    .center(new LatLng(location.get(0), location.get(1)))
+                    .radius(location.get(2))
+                    .strokeColor(R.color.colorPrimary)
+                    .fillColor(R.color.colorPrimaryDark));
+        }
 
         CameraPosition position = CameraPosition.builder().target(new LatLng(mLatitude, mLongitude)).zoom(13).bearing(0).build();
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(position));
