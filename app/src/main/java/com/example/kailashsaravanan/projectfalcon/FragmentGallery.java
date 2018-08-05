@@ -76,6 +76,7 @@ public class FragmentGallery extends Fragment {
                         mStorageRef.child("pictures/" + singleSnapshot.getKey() + ".jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
+                                picture.setImageUri(uri);
                                 picture.setImageUrl(uri.toString());
                                 mPictures.add(0, picture);
                                 mImageAdapter = new ImageAdapter(getActivity(), mPictures);

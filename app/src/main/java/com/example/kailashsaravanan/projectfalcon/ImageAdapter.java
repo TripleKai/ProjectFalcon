@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,13 +32,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         TextView textViewPicDate;
         TextView textViewPicSize;
         Button btnLocation;
+        ImageButton btnShare;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.image_view);
             textViewPicDate = itemView.findViewById(R.id.pic_date);
             textViewPicSize = itemView.findViewById(R.id.pic_size);
-            btnLocation = itemView.findViewById(R.id.btn_location);
+            btnLocation = itemView.findViewById(R.id.btn_pic_location);
+            btnShare = itemView.findViewById(R.id.btn_share_pic);
         }
 
     }
@@ -62,6 +65,19 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             @Override
             public void onClick(View v) {
                 displayer(picture);
+            }
+        });
+        holder.btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("image/jpeg");
+//                String shareSub = "Falcon Alert";
+//                String shareText = "FALCON ALERT: \n"+ "Incident Time - " + picture.getDateTime() + "\n" + "Location - " + picture.getLocation() + "\n";
+                intent.putExtra(Intent.EXTRA_STREAM, picture.getImageUri());
+//                intent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
+//                intent.putExtra(Intent.EXTRA_TEXT, shareText);
+                mContext.startActivity(Intent.createChooser(intent, "Share photo using"));
             }
         });
         holder.textViewPicDate.setText(picture.getDateTime());

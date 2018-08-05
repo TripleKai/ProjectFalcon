@@ -1,6 +1,9 @@
 package com.example.kailashsaravanan.projectfalcon;
 
+import android.net.Uri;
+
 public class Picture {
+    private Uri mImageUri;
     private String mImageUrl;
     private String mDateTime;
     private String mSize;
@@ -8,6 +11,14 @@ public class Picture {
 
     public Picture(){
 
+    }
+
+    public void setImageUri(Uri mImageUri) {
+        this.mImageUri = mImageUri;
+    }
+
+    public Uri getImageUri() {
+        return mImageUri;
     }
 
     public String getImageUrl() {
