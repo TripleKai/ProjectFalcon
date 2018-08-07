@@ -13,12 +13,12 @@ public class Picture {
 
     }
 
-    public void setImageUri(Uri mImageUri) {
-        this.mImageUri = mImageUri;
-    }
-
     public Uri getImageUri() {
         return mImageUri;
+    }
+
+    public void setImageUri(Uri mImageUri) {
+        this.mImageUri = mImageUri;
     }
 
     public String getImageUrl() {

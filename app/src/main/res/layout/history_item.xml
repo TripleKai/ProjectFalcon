@@ -1,23 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/history_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:background="@color/colorPrimaryDarker"
-        android:textColor="@color/colorButtonText"
-        android:textSize="20sp" />
+    android:layout_height="wrap_content">
 
     <View
+        android:id="@+id/separator"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_gravity="bottom|start"
-        android:background="@color/colorOffPrimary"
-        />
+        android:layout_height="2dp"
+        android:layout_gravity="top|start"
+        android:background="@color/colorOffPrimary" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/history_dateTime"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
+        android:background="@color/colorPrimaryDarker"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="@color/colorButtonText"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/history_motion"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/history_dateTime"
+        android:background="@color/colorPrimaryDarker"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:textColor="@color/colorButtonText"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/history_location"
+        android:layout_width="355dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/history_motion"
+        android:background="@color/colorPrimaryDarker"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/colorButtonText"
+        android:textSize="15sp" />
+
+    <ImageButton
+        android:id="@+id/btn_share_history"
+        android:layout_width="58dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimaryDarker"
+        android:padding="5dp"
+        android:src="@drawable/ic_share" />
+
+    <View
+        android:layout_width="2dp"
+        android:layout_height="100dp"
+        android:layout_alignStart="@+id/btn_share_history"
+        android:background="@color/colorButtonText" />
+
+</RelativeLayout>

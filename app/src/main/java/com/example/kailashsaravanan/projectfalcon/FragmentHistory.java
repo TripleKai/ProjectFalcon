@@ -67,12 +67,17 @@ public class FragmentHistory extends Fragment {
                 mItems = new ArrayList<>();
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                        final HistoryItem historyItem = new HistoryItem();
+                        String[] items = singleSnapshot.getValue(String.class).split(":");
+                        historyItem.setLocation(items[4]);
+                        historyItem.setMotionCount(items[0]);
                         mStorageRef.child("pictures/" + singleSnapshot.getKey() + ".jpg").getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                             @Override
                             public void onSuccess(StorageMetadata storageMetadata) {
                                 SimpleDateFormat sfd = new SimpleDateFormat("MM/dd/yyyy: HH:mm:ss", Locale.US);
                                 String dateTime = sfd.format(storageMetadata.getCreationTimeMillis());
-                                mItems.add(new HistoryItem(dateTime));
+                                historyItem.setDateTime(dateTime);
+                                mItems.add(0, historyItem);
                                 mHistoryAdapter = new HistoryAdapter(getActivity(), mItems);
                                 mRecyclerView.setAdapter(mHistoryAdapter);
                             }
