@@ -64,12 +64,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("video/mp4");
-//                String shareSub = "Falcon Alert";
-//                String shareText = "FALCON ALERT: \n"+ "Incident Time - " + picture.getDateTime() + "\n" + "Location - " + picture.getLocation() + "\n";
                 intent.putExtra(Intent.EXTRA_STREAM, video.getVideoUri());
-//                intent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
-//                intent.putExtra(Intent.EXTRA_TEXT, shareText);
-                mContext.startActivity(Intent.createChooser(intent, "Share photo using"));
+                mContext.startActivity(Intent.createChooser(intent, "Share video using"));
             }
         });
         holder.textViewVideoUrl.setText(video.getVideoUrl());

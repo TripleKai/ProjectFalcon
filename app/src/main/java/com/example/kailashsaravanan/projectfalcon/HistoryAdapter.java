@@ -56,7 +56,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.TextView
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 String shareSub = "FALCON ALERT";
-                String shareText = "FALCON ALERT: \n"+ "Incident Time - " + historyItem.getDateTime() + "\n" + "Location - " + historyItem.getLocation() + "\n";
+                String shareText = "FALCON ALERT: \n"+ "Incident Time - " + historyItem.getDateTime() + "\n" + "Location - " + historyItem.getLocation();
                 intent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
                 intent.putExtra(Intent.EXTRA_TEXT, shareText);
                 mContext.startActivity(Intent.createChooser(intent, "Share incident using"));

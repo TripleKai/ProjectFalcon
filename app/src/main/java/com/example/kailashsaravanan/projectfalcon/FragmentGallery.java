@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,8 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FragmentGallery extends Fragment {
+public class FragmentGallery extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     private static final String TAG = "FragmentGallery";
+    private SwipeRefreshLayout swipeLayout;
 
     private RecyclerView mRecyclerView;
     private ImageAdapter mImageAdapter;
@@ -49,6 +51,12 @@ public class FragmentGallery extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+
+        swipeLayout = view.findViewById(R.id.swipe_gallery);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.colorBackgroundLight));
+        swipeLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary),
+                getResources().getColor(R.color.colorAccent));
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -95,6 +103,12 @@ public class FragmentGallery extends Fragment {
 
         mRef.child("Captured Motion").addValueEventListener(mPictureListener);
         return view;
+    }
+
+    @Override
+    public void onRefresh() {
+        mRef.child("Captured Motion").addValueEventListener(mPictureListener);
+        swipeLayout.setRefreshing(false);
     }
 
     public static String humanReadableByteCount(long bytes, boolean si) {

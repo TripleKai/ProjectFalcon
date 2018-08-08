@@ -72,11 +72,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("image/jpeg");
-//                String shareSub = "Falcon Alert";
-//                String shareText = "FALCON ALERT: \n"+ "Incident Time - " + picture.getDateTime() + "\n" + "Location - " + picture.getLocation() + "\n";
                 intent.putExtra(Intent.EXTRA_STREAM, picture.getImageUri());
-//                intent.putExtra(Intent.EXTRA_SUBJECT, shareSub);
-//                intent.putExtra(Intent.EXTRA_TEXT, shareText);
                 mContext.startActivity(Intent.createChooser(intent, "Share photo using"));
             }
         });
