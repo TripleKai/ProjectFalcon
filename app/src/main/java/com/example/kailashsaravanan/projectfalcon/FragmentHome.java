@@ -7,6 +7,9 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,8 +20,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class FragmentHome extends Fragment{
+public class FragmentHome extends Fragment implements Animation.AnimationListener{
     private static final String TAG = "FragmentHome";
+
+    private Animation mZoomIn, mZoomOut;
+    private DecelerateInterpolator mDecelerateInterpolator = new DecelerateInterpolator(1.5f);
 
     private static String CHANNEL_ID = "ID";
     private int notificationId = 1;
@@ -64,6 +70,16 @@ public class FragmentHome extends Fragment{
         mOutputMotionText.setVerticalScrollBarEnabled(true);
         mOutputMotionText.setMovementMethod(new ScrollingMovementMethod());
 
+        mZoomIn = AnimationUtils.loadAnimation(getContext(),
+                R.anim.zoom_in );
+        mZoomIn.setAnimationListener(this);
+        mZoomIn.setInterpolator(mDecelerateInterpolator);
+
+        mZoomOut = AnimationUtils.loadAnimation(getContext(),
+                R.anim.zoom_out );
+        mZoomOut.setAnimationListener(this);
+        mZoomOut.setInterpolator(mDecelerateInterpolator);
+
         // Set value event listener for data changes of any kind
         mFalconListener = new ValueEventListener() {
             @Override
@@ -71,6 +87,7 @@ public class FragmentHome extends Fragment{
                 if(dataSnapshot.hasChildren()) {
                     setmAcknowledge(true);
                     mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    mAcknowledgeButton.startAnimation(mZoomIn);
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
                             mainActivity.sendNotification();
@@ -111,6 +128,7 @@ public class FragmentHome extends Fragment{
                 if(dataSnapshot.hasChildren()) {
                     setmAcknowledge(true);
                     mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    mAcknowledgeButton.startAnimation(mZoomIn);
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
                             mainActivity.sendNotification();
@@ -152,6 +170,7 @@ public class FragmentHome extends Fragment{
                 if(mAcknowledge){
                     setmAcknowledge(false);
                     mAcknowledgeButton.setBackground(getResources().getDrawable(R.drawable.button_bg2));
+                    mAcknowledgeButton.startAnimation(mZoomOut);
                     Toast.makeText(getActivity(), "Acknowledged", Toast.LENGTH_SHORT).show();
                     if(mActive){
                         mOutputFacesText.setText(R.string.status_safe);
@@ -164,6 +183,7 @@ public class FragmentHome extends Fragment{
                 }
             }
         });
+
 
         // Initialize one-time database-calling button
         mCallApiButton = view.findViewById(R.id.callAPIButton);
@@ -204,6 +224,21 @@ public class FragmentHome extends Fragment{
 //
 //        outState.putBoolean("mActive", mActive);
 //    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
 
     private void pingFirebase(){
         Toast.makeText(getActivity(), "Falcon has been called", Toast.LENGTH_SHORT).show();

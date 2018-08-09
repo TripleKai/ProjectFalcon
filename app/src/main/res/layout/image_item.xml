@@ -45,7 +45,7 @@
             <Button
                 android:id="@+id/btn_pic_location"
                 android:layout_width="150dp"
-                android:layout_height="153dp"
+                android:layout_height="152dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/button_bg4"
@@ -66,7 +66,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/image_view"
                 android:background="@color/colorOffPrimary" />
