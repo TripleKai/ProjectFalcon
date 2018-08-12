@@ -88,6 +88,8 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
                     setmAcknowledge(true);
                     mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     mAcknowledgeButton.startAnimation(mZoomIn);
+                    mCallApiButton.setEnabled(false);
+                    mActivationButton.setEnabled(false);
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
                             mainActivity.sendNotification();
@@ -129,6 +131,8 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
                     setmAcknowledge(true);
                     mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                     mAcknowledgeButton.startAnimation(mZoomIn);
+                    mCallApiButton.setEnabled(false);
+                    mActivationButton.setEnabled(false);
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
                             mainActivity.sendNotification();
@@ -171,6 +175,8 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
                     setmAcknowledge(false);
                     mAcknowledgeButton.setBackground(getResources().getDrawable(R.drawable.button_bg2));
                     mAcknowledgeButton.startAnimation(mZoomOut);
+                    mCallApiButton.setEnabled(true);
+                    mActivationButton.setEnabled(true);
                     Toast.makeText(getActivity(), "Acknowledged", Toast.LENGTH_SHORT).show();
                     if(mActive){
                         mOutputFacesText.setText(R.string.status_safe);
@@ -251,8 +257,8 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
             Toast.makeText(getActivity(), "Falcon is now awake", Toast.LENGTH_SHORT).show();
             mRef.child("/").addValueEventListener(mFalconListener);
             mActivationButton.setText(R.string.listening);
-            mActivationButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-        }
+            mActivationButton.setBackground(getResources().getDrawable(R.drawable.button_bg6));
+    }
         else {
             Toast.makeText(getActivity(), "Falcon is now asleep", Toast.LENGTH_SHORT).show();
             mRef.child("/").removeEventListener(mFalconListener);

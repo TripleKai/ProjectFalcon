@@ -37,7 +37,7 @@
     <TextView
         android:id="@+id/history_location"
         android:layout_width="355dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_below="@+id/history_motion"
         android:background="@color/colorPrimaryDarker"
         android:paddingStart="10dp"
@@ -52,7 +52,7 @@
         android:layout_height="101dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:background="@color/colorPrimaryDarker"
+        android:background="@drawable/button_bg3"
         android:padding="5dp"
         android:src="@drawable/ic_share" />
 

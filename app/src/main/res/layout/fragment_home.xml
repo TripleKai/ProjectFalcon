@@ -43,7 +43,7 @@
         android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="165dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/button_bg5"
         android:text="@string/call_gmail_api"
         android:textColor="@color/colorButtonText"
         app:layout_constraintBottom_toTopOf="@+id/activationButton"
