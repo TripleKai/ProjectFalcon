@@ -39,8 +39,8 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
     private GoogleMap mGoogleMap;
     private MapView mMapView;
     private View mView;
-    private ArrayList<ArrayList<Double>> mLocations;
-    private ArrayList<Double> mLocation;
+    private ArrayList<LatLng> mLocations;
+    private ArrayList<Double> mAccuracies;
 
     public FragmentMap(){
 
@@ -55,17 +55,15 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mLocations = new ArrayList<>();
-                mLocation = new ArrayList<>();
+                mAccuracies = new ArrayList<>();
                 if (dataSnapshot.hasChildren()){
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                         String[] items = singleSnapshot.getValue(String.class).split(":");
                         mLatitude = Double.parseDouble(items[1]);
                         mLongitude = Double.parseDouble(items[2]);
                         mAccuracy = Double.parseDouble(items[3]);
-                        mLocation.add(mLatitude);
-                        mLocation.add(mLongitude);
-                        mLocation.add(mAccuracy);
-                        mLocations.add(mLocation);
+                        mLocations.add(new LatLng(mLatitude, mLongitude));
+                        mAccuracies.add(mAccuracy);
                     }
                 }
             }
@@ -93,17 +91,22 @@ public class FragmentMap extends Fragment implements OnMapReadyCallback{
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        MapsInitializer.initialize(getContext());
+        MapsInitializer.initialize(getActivity());
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        int count = 0;
 
-        for (ArrayList<Double> location : mLocations) {
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(location.get(0), location.get(1))).title("Incident").snippet("Accuracy: " + String.valueOf(location.get(2)) + " Meters"));
+        for (LatLng location : mLocations) {
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(location)
+                    .title("Incident")
+                    .snippet("Accuracy: " + String.valueOf(mAccuracies.get(count)) + " Meters"));
             mGoogleMap.addCircle(new CircleOptions()
-                    .center(new LatLng(location.get(0), location.get(1)))
-                    .radius(location.get(2))
+                    .center(location)
+                    .radius(mAccuracies.get(count))
                     .strokeColor(R.color.colorPrimary)
                     .fillColor(R.color.colorPrimaryDark));
+            count++;
         }
 
         CameraPosition position = CameraPosition.builder().target(new LatLng(mLatitude, mLongitude)).zoom(13).bearing(0).build();

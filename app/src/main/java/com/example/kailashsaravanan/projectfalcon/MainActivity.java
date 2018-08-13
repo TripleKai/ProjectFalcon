@@ -228,20 +228,20 @@ public class MainActivity extends AppCompatActivity {
         // Create an explicit intent for an Activity in your app
         Intent intent = new Intent(this, FragmentHome.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        PendingIntent actionIntent = PendingIntent.getBroadcast(this, 0, new Intent(this, this.getClass()), PendingIntent.FLAG_UPDATE_CURRENT);
+//        PendingIntent actionIntent = PendingIntent.getBroadcast(this, 0, new Intent(this, this.getClass()), PendingIntent.FLAG_UPDATE_CURRENT);
 
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("FALCON ALERT")
                 .setContentText("Suspicious motion has been detected")
                 .setColor(Color.WHITE)
-                .setContentIntent(actionIntent)
+                .setContentIntent(pendingIntent)
                 .setColor(Color.parseColor("#B00020"))
                 .setOnlyAlertOnce(true)
                 .setAutoCancel(true)
-                .addAction(R.mipmap.ic_launcher, "Acknowledge", actionIntent)
+                .addAction(R.mipmap.ic_launcher, "Acknowledge", pendingIntent)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 

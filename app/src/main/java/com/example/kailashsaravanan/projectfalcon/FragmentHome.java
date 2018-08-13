@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 public class FragmentHome extends Fragment implements Animation.AnimationListener{
     private static final String TAG = "FragmentHome";
 
-    private Animation mZoomIn, mZoomOut;
+    private Animation mZoomIn, mZoomOut, mFadeIn, mFadeOut;
     private DecelerateInterpolator mDecelerateInterpolator = new DecelerateInterpolator(1.5f);
 
     private static String CHANNEL_ID = "ID";
@@ -80,16 +80,31 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
         mZoomOut.setAnimationListener(this);
         mZoomOut.setInterpolator(mDecelerateInterpolator);
 
+        mFadeIn = AnimationUtils.loadAnimation(getContext(),
+                R.anim.fade_in );
+        mFadeIn.setAnimationListener(this);
+        mFadeIn.setInterpolator(mDecelerateInterpolator);
+
+        mFadeOut = AnimationUtils.loadAnimation(getContext(),
+                R.anim.fade_out );
+        mFadeOut.setAnimationListener(this);
+        mFadeOut.setInterpolator(mDecelerateInterpolator);
+
         // Set value event listener for data changes of any kind
         mFalconListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()) {
                     setmAcknowledge(true);
-                    mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                    mAcknowledgeButton.startAnimation(mZoomIn);
                     mCallApiButton.setEnabled(false);
                     mActivationButton.setEnabled(false);
+                    mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    mAcknowledgeButton.startAnimation(mZoomIn);
+                    mAcknowledgeButton.startAnimation(mZoomIn);
+                    mCallApiButton.startAnimation(mFadeOut);
+                    mCallApiButton.setVisibility(View.GONE);
+                    mActivationButton.startAnimation(mFadeOut);
+                    mActivationButton.setVisibility(View.GONE);
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
                             mainActivity.sendNotification();
@@ -129,10 +144,14 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()) {
                     setmAcknowledge(true);
-                    mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                    mAcknowledgeButton.startAnimation(mZoomIn);
                     mCallApiButton.setEnabled(false);
                     mActivationButton.setEnabled(false);
+                    mAcknowledgeButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    mAcknowledgeButton.startAnimation(mZoomIn);
+                    mCallApiButton.startAnimation(mFadeOut);
+                    mCallApiButton.setVisibility(View.GONE);
+                    mActivationButton.startAnimation(mFadeOut);
+                    mActivationButton.setVisibility(View.GONE);
                     for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                         if (singleSnapshot.getKey().equals("Captured Faces") && singleSnapshot.hasChildren()) {
                             mainActivity.sendNotification();
@@ -173,10 +192,14 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
             public void onClick(View v) {
                 if(mAcknowledge){
                     setmAcknowledge(false);
-                    mAcknowledgeButton.setBackground(getResources().getDrawable(R.drawable.button_bg2));
-                    mAcknowledgeButton.startAnimation(mZoomOut);
                     mCallApiButton.setEnabled(true);
                     mActivationButton.setEnabled(true);
+                    mAcknowledgeButton.setBackground(getResources().getDrawable(R.drawable.button_bg2));
+                    mAcknowledgeButton.startAnimation(mZoomOut);
+                    mCallApiButton.startAnimation(mFadeIn);
+                    mCallApiButton.setVisibility(View.VISIBLE);
+                    mActivationButton.startAnimation(mFadeIn);
+                    mActivationButton.setVisibility(View.VISIBLE);
                     Toast.makeText(getActivity(), "Acknowledged", Toast.LENGTH_SHORT).show();
                     if(mActive){
                         mOutputFacesText.setText(R.string.status_safe);
