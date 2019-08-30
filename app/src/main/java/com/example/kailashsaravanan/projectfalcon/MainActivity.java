@@ -226,9 +226,9 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
 
         // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, FragmentHome.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 //        PendingIntent actionIntent = PendingIntent.getBroadcast(this, 0, new Intent(this, this.getClass()), PendingIntent.FLAG_UPDATE_CURRENT);
 
