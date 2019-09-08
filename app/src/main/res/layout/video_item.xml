@@ -48,7 +48,7 @@
                 android:id="@+id/btn_vid_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="110dp"
+                android:layout_below="@id/video_url"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:background="@drawable/button_bg4"

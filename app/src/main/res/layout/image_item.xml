@@ -36,21 +36,21 @@
 
             <ImageView
                 android:id="@+id/image_view"
-                android:layout_width="250dp"
-                android:layout_height="193dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:paddingBottom="10dp"
                 android:paddingTop="50dp" />
 
             <Button
                 android:id="@+id/btn_pic_location"
-                android:layout_width="150dp"
-                android:layout_height="152dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/button_bg4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/image_view"
                 android:paddingBottom="20dp"
                 android:paddingTop="20dp"
+                android:background="@drawable/button_bg4"
                 android:textColor="@color/colorButtonText" />
 
             <ImageButton
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/image_view"
+                android:layout_below="@+id/btn_pic_location"
                 android:background="@drawable/button_bg3"
                 android:padding="15dp"
                 android:src="@drawable/ic_share"

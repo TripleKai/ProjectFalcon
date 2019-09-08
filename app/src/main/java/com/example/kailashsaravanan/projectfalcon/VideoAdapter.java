@@ -2,6 +2,7 @@ package com.example.kailashsaravanan.projectfalcon;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
@@ -72,6 +76,26 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         holder.textViewVidDate.setText(video.getDateTime());
         holder.textViewVidSize.setText(video.getSize());
         holder.btnVidLocation.setText(video.getLocation());
+        holder.btnVidLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGoogleMaps(video.getLocation());
+            }
+        });
+    }
+
+    public void openGoogleMaps(String location) {
+        try {
+            String locationQuery = URLEncoder.encode(location, "utf-8");
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + locationQuery);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            if (mapIntent.resolveActivity(mContext.getPackageManager()) != null) {
+                mContext.startActivity(mapIntent);
+            }
+        } catch (UnsupportedEncodingException e){
+            Toast.makeText(mContext, "Could not encode", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
