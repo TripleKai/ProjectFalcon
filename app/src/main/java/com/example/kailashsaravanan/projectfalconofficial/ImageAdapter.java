@@ -1,11 +1,11 @@
-package com.example.kailashsaravanan.projectfalcon;
+package com.example.kailashsaravanan.projectfalconofficial;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +25,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private Context mContext;
     private List<Picture> mPictures;
+    private MainActivity mainActivity = new MainActivity();
 
     public ImageAdapter(Context context, List<Picture> pictures){
         mContext = context;
@@ -37,6 +38,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         TextView textViewPicSize;
         Button btnLocation;
         ImageButton btnShare;
+        ImageButton btnDownloadPic;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
@@ -45,6 +47,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             textViewPicSize = itemView.findViewById(R.id.pic_size);
             btnLocation = itemView.findViewById(R.id.btn_pic_location);
             btnShare = itemView.findViewById(R.id.btn_share_pic);
+            btnDownloadPic = itemView.findViewById(R.id.btn_download_pic);
         }
 
     }
@@ -80,6 +83,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 mContext.startActivity(Intent.createChooser(intent, "Share photo using"));
             }
         });
+        holder.btnDownloadPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getContext().getApplicationContext();
+                mainActivity.startDownload(picture.getImageUrl());
+            }
+        });
         holder.textViewPicDate.setText(picture.getDateTime());
         holder.textViewPicSize.setText(picture.getSize());
         holder.btnLocation.setText(picture.getLocation());
@@ -91,7 +101,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         });
     }
 
-    public void openGoogleMaps(String location) {
+    @Override
+    public int getItemCount() {
+        return mPictures.size();
+    }
+
+    private void openGoogleMaps(String location) {
         try {
             String locationQuery = URLEncoder.encode(location, "utf-8");
             Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + locationQuery);
@@ -105,12 +120,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return mPictures.size();
-    }
-
-    public void displayer(Picture picture){
+    private void displayer(Picture picture){
         Intent intent = new Intent(mContext, DisplayImageActivity.class);
         intent.putExtra(EXTRA_MESSAGE, picture.getImageUrl());
         mContext.startActivity(intent);

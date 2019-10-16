@@ -1,31 +1,46 @@
-package com.example.kailashsaravanan.projectfalcon;
+package com.example.kailashsaravanan.projectfalconofficial;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.preference.PreferenceManager;
+import com.google.android.material.navigation.NavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.services.gmail.GmailScopes;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle mActionBarDrawerToggle;
     FragmentTransaction mFragmentTransaction;
     MainActivity main = this;
+
+//    public SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
     private boolean mNotificationSent = false;
 
@@ -147,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        Toast.makeText(main, "Stopped", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, NotificationService.class);
+        startService(intent);
 //        startService( new Intent( this, NotificationService. class )) ;
     }
 
@@ -158,6 +178,70 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    class DownloadTask extends AsyncTask<String, Integer, String> {
+
+        ProgressBar progressBar;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            progressBar = new ProgressBar(MainActivity.this, null,android.R.attr.progressBarStyleLarge);
+            progressBar.setMax(100);
+            progressBar.setProgress(0);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String path = params[0];
+            int fileLength = 0;
+            try{
+                URL url = new URL(path);
+                URLConnection urlConnection = url.openConnection();
+                urlConnection.connect();
+                fileLength = urlConnection.getContentLength();
+                File newFolder = new File("sdcard/photoalbum");
+                if(!newFolder.exists()){
+                    newFolder.mkdir();
+                }
+                File inputFile = new File(newFolder, "downloadedImage.jpg");
+                InputStream inputStream = new BufferedInputStream(url.openStream(), 8192);
+                byte[] data = new byte[1024];
+                int total = 0;
+                int count = 0;
+                OutputStream outputStream = new FileOutputStream(inputFile);
+
+                while((count = inputStream.read(data)) != -1){
+                    total += count;
+                    outputStream.write(data, 0, count);
+                    int progress = (int)total * 100 / fileLength;
+                    publishProgress(progress);
+                }
+
+                inputStream.close();
+                outputStream.close();
+            } catch (MalformedURLException e){
+                e.printStackTrace();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+            return "Download Complete";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            progressBar.setProgress(values[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            progressBar.setVisibility(View.INVISIBLE);
+//            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void createNotificationChannel() {
@@ -206,6 +290,12 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(notificationId, mBuilder.build());
 
         mNotificationSent = !mNotificationSent;
+    }
+
+    public void startDownload(String url){
+        DownloadTask downloadTask = new DownloadTask();
+        downloadTask.execute(url);
+        Toast.makeText(main, url, Toast.LENGTH_SHORT).show();
     }
 
     public boolean getNotificationSent(){

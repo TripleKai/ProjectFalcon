@@ -1,8 +1,8 @@
-package com.example.kailashsaravanan.projectfalcon;
+package com.example.kailashsaravanan.projectfalconofficial;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,9 +48,9 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
 
     }
 
-    @android.support.annotation.Nullable
+    @androidx.annotation.Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @android.support.annotation.Nullable ViewGroup container, @android.support.annotation.Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @androidx.annotation.Nullable ViewGroup container, @androidx.annotation.Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         mainActivity = (MainActivity) getActivity();
@@ -229,7 +229,8 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
             @Override
             public void onClick(View v) {
                 mActive = !mActive;
-                activateFirebaseListener();
+
+                toggleFirebaseListener();
             }
         });
 
@@ -275,7 +276,7 @@ public class FragmentHome extends Fragment implements Animation.AnimationListene
         mRef.child("/").removeEventListener(mPinger);
     }
 
-    private void activateFirebaseListener(){
+    private void toggleFirebaseListener(){
         if(mActive) {
             Toast.makeText(getActivity(), "Falcon is now awake", Toast.LENGTH_SHORT).show();
             mRef.child("/").addValueEventListener(mFalconListener);
